@@ -1,0 +1,250 @@
+CREATE TABLE Suppliers(
+    SupplierID int NOT NULL AUTO_INCREMENT,
+    SupplierName varchar(100) not null, 
+    Address varchar(50) NOT NULL,
+    PhoneNumber varchar(12) NOT NULL, 
+    Email varchar(50) NOT NULL,
+    CONSTRAINT Supp_PK PRIMARY KEY(SupplierID)
+);
+
+
+CREATE TABLE Ingredients(
+IngredientID INT NOT NULL AUTO_INCREMENT,
+IngredientName varchar(50) NOT NULL,
+Quantity INT NOT NULL,
+PricePerItem float NOT NULL,
+SupplierID int NOT NULL,
+CONSTRAINT Ingr_PK PRIMARY KEY(IngredientID),
+CONSTRAINT Supp_FK FOREIGN KEY(SupplierID) REFERENCES suppliers(SupplierID)
+); 
+
+CREATE TABLE Store(
+StoreNum INT NOT NULL AUTO_INCREMENT, 
+StoreName varchar(50) NOT NULL, 
+StoreAddress varchar(250) NOT NULL,
+StorePhone varchar(15) NOT NULL, 
+CONSTRAINT Store_PK PRIMARY KEY(StoreNum)    
+    );
+
+CREATE TABLE Employees(
+EmployeeID INT NOT NULL AUTO_INCREMENT,
+EmployeeName varchar(50) NOT NULL,
+PhoneNumber varchar(12) NOT NULL,
+Email varchar(100) NOT NULL,
+Salary float NOT NULL, 
+StoreNumber int NOT NULL,
+CONSTRAINT Emp_PK PRIMARY KEY(EmployeeID),
+CONSTRAINT Stor_FK FOREIGN KEY(StoreNumber) REFERENCES Store(StoreNum)
+);
+
+CREATE TABLE SMOOTHIE(
+SmoothieID INT NOT NULL AUTO_INCREMENT, 
+SmoothieName Varchar(50) NOT NULL,
+Price float NOT NULL,
+CONSTRAINT Sm_PK PRIMARY KEY(SmoothieID)
+);
+
+
+CREATE TABLE NutritionFacts (
+NutritionID INT NOT NULL AUTO_INCREMENT, 
+Calories INT NOT NULL, 
+Fat INT NOT NULL, 
+Carbs INT NULL,
+SmoothieID INT NOT NULL,
+CONSTRAINT Nutrition_PK PRIMARY KEY(NutritionID), 
+CONSTRAINT Smoothie_PK FOREIGN KEY(SmoothieID) REFERENCES Smoothie(SmoothieID)
+    );
+
+CREATE TABLE Customers(
+CustomerID INT NOT NULL AUTO_INCREMENT, 
+CustomerName varchar(50) NOT NULL,
+CustomerAddress varchar(100) NOT NULL,
+CustomerAge INT null, 
+CONSTRAINT Customer_PK PRIMARY KEY(CustomerID)
+    );
+
+CREATE TABLE Orders (
+OrderID INT NOT NULL AUTO_INCREMENT, 
+CustomerID INT NOT NULL,
+SmoothieID INT NOT NULL,
+CONSTRAINT OCS_PK PRIMARY KEY(OrderID, CustomerID, SmoothieID),
+CONSTRAINT Cust_FK FOREIGN KEY(CustomerID) REFERENCES Customers(CustomerID),
+CONSTRAINT Smoo_FK FOREIGN KEY(SmoothieID) REFERENCES Smoothie(SmoothieID)
+);
+
+CREATE TABLE RecipeOne(
+    RecipeID INT NOT NULL,
+    SmoothieID INT NOT NULL,
+    Ingredient Varchar(50) not null, 
+    Quantity varChar(50) not null,
+    CONSTRAINT Recipe_PK Primary Key(RecipeID),
+    CONSTRAINT Smoothie_FK Foreign Key(SmoothieID) REFERENCES Smoothie(SmoothieID)  
+    );
+
+CREATE TABLE RecipeTwo(
+    RecipeID INT NOT NULL,
+    SmoothieID INT NOT NULL,
+    Ingredient Varchar(50) not null, 
+    Quantity varChar(50) not null,
+    CONSTRAINT Recipe2_PK Primary Key(RecipeID),
+    CONSTRAINT Smoothie2_FK Foreign Key(SmoothieID) REFERENCES Smoothie(SmoothieID)  
+    );
+
+INSERT INTO Suppliers VALUES (null, "Ingredients and Co.", "276 Orchid Way, San Jose CA", "578-3929", "ingredientsandco@gmail.com");
+INSERT INTO Suppliers VALUES (null, "Fruit Co.", "986 East Avenue Palo Alto CA", "874-5963", "fruitco@gmail.com"); 
+INSERT INTO Ingredients VALUES (null, "Sugar", 5, 3.99, 1);
+INSERT INTO Ingredients VALUES (null, "Bananas", 100, 0.50, 2);
+INSERT INTO Store VALUES (null, "ISTea", "235 Westgate Road, State College, PA", "558-3229");
+INSERT INTO Store VALUES (null, "ISTea", "425 McAllistar Lane, State College, PA", "558-7125");
+INSERT INTO Store VALUES (null, "ISTea", "263 East Ave, State College, PA", "589-5126");
+INSERT INTO Employees VALUES (null, "Regina Brown", "533-8482", "reginabrown22@psu.edu", 56900.00, 2);
+INSERT INTO Smoothie VALUES (null, "Banana", 5.99); 
+INSERT INTO Smoothie VALUES (null, "Peach", 6.50); 
+INSERT INTO NutritionFacts VALUES (null, 520, 5, 65, 1);
+INSERT INTO NutritionFacts VALUES (null, 490, 6, 70, 2);
+INSERT INTO Customers VALUES (null,"Mary Beth", "120 North Atherton, State College PA", 45);
+INSERT INTO Orders VALUES (null, 1, 2); 
+INSERT INTO RecipeOne VALUES (100, 1, "Banana", 1);
+INSERT INTO RecipeTwo VALUES (101, 2, "Peach", 2);
+
+INSERT INTO Suppliers (SupplierID, SupplierName, Address, PhoneNumber, Email) VALUES 
+(null, "Food and Things", "982 Calder Way, State College PA", "538-9123", "foodandthings@psu.edu"),
+(null, "Cups and More", "100 Calder Way, State College PA", "538-9188", "cupsandmore@gmail.com");
+
+INSERT INTO Ingredients (IngredientID, IngredientName, Quantity, PricePerItem, SupplierID) VALUES 
+(null, "Strawberries", "100", 1.99, 2),
+(null, "Cups", "2000", 0.10, 4), 
+(null, "Straws", "2000", 0.05, 4);
+
+INSERT INTO Store (StoreNum, StoreName, StoreAddress, StorePhone) VALUES 
+(null, "ISTea", "200 6th Street, Philadelphia PA", "215-234-9123"),
+(null, "ISTea", "179 Borad Street, New York NY", "212-254-9563");
+
+INSERT INTO Employees (EmployeeID, EmployeeName, PhoneNumber, Email, Salary, StoreNumber) VALUES 
+(null, "Kate Beck", "538-9123", "k8tebeck@psu.edu", 12000.00, 1), 
+(null, "Rory Gilmore", "212-561-6895", "rorgils@gmail.com", 18000.00, 5),
+(null, "Dean Winchester", "215-895-5985", "supernatural123@gmail.com", 8000.00, 4),
+(null, "Jessica Pusey", "215-595-8796", "jpmarvelfan@gmail.com", 19500.00, 4);
+
+INSERT INTO Customers (CustomerID, CustomerName, CustomerAddress, CustomerAge) VALUES 
+(null, "Kelly Ann", "259 12th Avenue, New York NY", 22),
+(null, "Lane Kim", "123 Gerard Way, Phiadelphia PA", 16),
+(null, "Sarah Miller", "190 College Ave, State College PA", null); 
+
+INSERT INTO Orders (OrderID, CustomerID, SmoothieID) VALUES 
+(null, 4, 2),
+(null, 2, 2),
+(null, 4, 1);
+
+INSERT INTO Customers VALUES
+(null, "Joe Cambell", "300 West Garden, New York NY", 25),
+(null, "West Kanye", "242 Philly Way, Philedelphia PA", 33), 
+(null, "Jordan Hillsley", "322 South Dr, State College PA", 18), 
+(null, "Harry Potter", "Hogwartz School of Wizardry, Scotland Yard, England", 28),
+(null, "Guilherme Lima", "652 Forward Way, Austin, TX", 19), 
+(null,"George Washington", "666 Devil's Dr, Georgetown, MI", 60);
+
+
+INSERT INTO Employees VALUES
+(null, "Pete Dartley", "923-123-5920", "pdgadgetman@gmail.com", 14000, 5),
+(null, "Carlos Menda", "342-483-1129", "carlosman@gmail.com", 9000, 2),
+(null, "Carbon Colemon", "324-232-4901", "ccdabonthem@gmail.com", 10000, 1),
+(null, "Partridge Mackle", "234-513-3132", "pmmefood@gmail.com", 24000, 2), 
+(null, "Sir Damien Newart", "666-666-6666", "notthedevil@gmail.com", 66666, 3);
+
+INSERT INTO Ingredients VALUES
+(null, "Kiwi", 10, 6.99, 1), 
+(null, "Peaches", 15, 2.99, 4), 
+(null, "Dragonfruit", 3, 4.99, 4), 
+(null, "Blueberries", 100, 1.99, 2), 
+(null, "Mangoes", 50, 0.5, 1);
+
+INSERT INTO Orders( OrderID, CustomerID, SmoothieID) VALUES
+(null, 4, 1),
+(null, 2, 2),
+(null, 1, 1), 
+(null, 2, 1),
+(null, 4, 2),
+(null, 2, 2);
+
+
+SELECT IngredientName, PricePeritem
+FROM Ingredients
+WHERE PricePerItem > 1.00;
+
+SELECT CustomerName, CustomerID, CustomerAddress
+From Customers 
+WHERE CustomerAddress like "%State College PA"; 
+
+SELECT Calories, SmoothieID
+FROM NutritionFacts 
+WHERE Carbs > 50 
+ORDER BY Calories ASC; 
+
+SELECT EmployeeID, EmployeeName, Salary
+FROM Employees
+WHERE Salary between 10000 and 20000
+Order by salary DESC; 
+
+SELECT SupplierName, Address, PhoneNumber
+FROM Suppliers 
+WHERE Address LIKE "%Calder Way%";
+
+UPDATE Employees
+SET EmployeeName = "Katherine Beck"
+WHERE EmployeeName = "Kate Beck";
+
+UPDATE SMOOTHIE
+SET Price = 6.99
+WHERE SmoothieID = 2;
+
+SELECT i.IngredientID, i.IngredientName, s.SupplierName
+FROM Ingredients as i JOIN Suppliers as s 
+ON i.SupplierID = s.SupplierID 
+WHERE s.Address LIKE "%CA"
+Order by s.SupplierName ASC;  
+
+SELECT c.CustomerName, c.CustomerAddress, o.OrderID
+FROM Customers as c LEFT JOIN Orders as o
+ON c.CustomerID = o.CustomerID; 
+
+SELECT MAX(PricePerItem), s.SupplierName, i.IngredientName
+From Ingredients as I RIGHT JOIN Suppliers as s
+ON i.SupplierID = s.SupplierID 
+Group by s.SupplierName; 
+
+SELECT e.EmployeeName, e.Salary, s.StoreAddress, s.StoreNum
+FROM Employees as e RIGHT JOIN Store as s 
+ON e.StoreNumber = s.StoreNum
+Order by s.StoreNum;
+
+SELECT COUNT(o.OrderID) as "Number of Peach Smoothies"
+FROM Orders as o JOIN Smoothie as s
+ON o.SmoothieID = s.SmoothieID
+WHERE s.SmoothieName = "Peach"; 
+
+SELECT ROUND(AVG(PricePerItem),2) as "Average Price of Cups and More Products"
+FROM Ingredients
+WHERE SupplierID IN(
+    SELECT SupplierID 
+    FROM Suppliers
+    WHERE SupplierName = "Cups and More"); 
+
+SELECT EmployeeName, MIN(Salary)
+FROM Employees
+WHERE StoreNumber IN(
+    SELECT StoreNum
+    FROM Store
+    WHERE StoreAddress = "200 6th Street, Philadelphia PA"); 
+
+SELECT SUM(Quantity)
+FROM Ingredients 
+WHERE SupplierID IN(
+    SELECT SupplierID
+    FROM Suppliers
+    WHERE Address LIKE "%State College%"); 
+
+
+
+
+
